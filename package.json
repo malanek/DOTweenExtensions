@@ -1,12 +1,11 @@
 {
-    "name": "com.bugbomb.unirxintegrations",
+    "name": "com.malanek.unirxintegrations",
     "version": "1.3.0",
     "displayName": "BB DOTween Extensions",
     "description": "DOTween Extensions",
     "license": "MIT",
     "unity": "2022.3",
     "additionalInfo": {
-        "repositoryLink": "https://bitbucket.org/bugbombstudio/unirxbbintegrations/src/master",
         "supportContact": "For any questions or issues contact mateusz.malanowski@bugbomb.com"
     }
 }
