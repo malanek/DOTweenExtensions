@@ -201,12 +201,25 @@ namespace BBExtensions.DOTweenExt
         /// <returns></returns>
         public static TweenerCore<Vector3, Vector3, VectorOptions> DOLocalMove(this Transform target, Vector3 endValue, DOTweenParams @params, bool snapping = false)
         {
-            var t = target.DOLocalMove(endValue, @params.Duration, snapping);
+            var t = target.DOLocalMove(endValue, @params.Duration, snapping).SetEase(Ease.Flash);
             SetEase(t, @params);
             return t;
         }
 
-        private static void SetEase(Tween t, DOTweenParams @params)
+        /// <summary>
+        /// Sets the ease of the tween.<br/>
+        /// If applied to Sequences eases the whole sequence animation.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="params"></param>
+        /// <returns></returns>
+        public static T SetEase<T>(this T t, DOTweenParams @params) where T : Tween
+        {
+            SetEaseInternal(t, @params);
+            return t;
+        }
+
+        private static void SetEaseInternal(Tween t, DOTweenParams @params)
         {
             if (@params.CustomEase)
                 t.SetEase(@params.AnimationCurve);
