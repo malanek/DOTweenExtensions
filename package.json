@@ -1,11 +1,16 @@
 {
     "name": "com.malanek.dotweenextensions",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "displayName": "BB DOTween Extensions",
     "description": "DOTween Extensions",
     "license": "MIT",
     "unity": "2022.3",
     "additionalInfo": {
         "supportContact": "For any questions or issues contact mateusz.malanowski@bugbomb.com"
+    },
+    "author": {
+        "name": "Mateusz Malanowski",
+        "email": "mateusz.malanowski@bugbomb.com",
+        "url": "https://github.com/malanek"
     }
 }
