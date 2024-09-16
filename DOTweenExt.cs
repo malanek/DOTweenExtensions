@@ -20,7 +20,7 @@ namespace BBExtensions.DOTweenExt
         public static TweenerCore<Vector3, Path, PathOptions> DOPath(this Transform target, Vector3[] path, DOTweenParams @params, PathType pathType = PathType.Linear, PathMode pathMode = PathMode.Full3D, int resolution = 10, Color? gizmoColor = null)
         {
             var t = target.DOPath(path, @params.Duration, pathType, pathMode, resolution, gizmoColor);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -32,7 +32,7 @@ namespace BBExtensions.DOTweenExt
         public static TweenerCore<Quaternion, Vector3, QuaternionOptions> DORotate(this Transform target, Vector3 endValue, DOTweenParams @params, RotateMode mode = RotateMode.Fast)
         {
             var t = target.DORotate(endValue, @params.Duration, mode);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -47,7 +47,7 @@ namespace BBExtensions.DOTweenExt
         public static TweenerCore<Quaternion, Quaternion, NoOptions> DORotateQuaternion(this Transform target, Quaternion endValue, DOTweenParams @params)
         {
             var t = target.DORotateQuaternion(endValue, @params.Duration);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -59,7 +59,7 @@ namespace BBExtensions.DOTweenExt
         public static TweenerCore<Vector3, Vector3, VectorOptions> DOMove(this Transform target, Vector3 endValue, DOTweenParams @params, bool snapping = false)
         {
             var t = target.DOMove(endValue, @params.Duration);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -70,7 +70,7 @@ namespace BBExtensions.DOTweenExt
         public static TweenerCore<Vector3, Vector3, VectorOptions> DOScale(this Transform target, Vector3 endValue, DOTweenParams @params)
         {
             var t = target.DOScale(endValue, @params.Duration);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -81,7 +81,7 @@ namespace BBExtensions.DOTweenExt
         public static TweenerCore<Vector3, Vector3, VectorOptions> DOScale(this Transform target, float endValue, DOTweenParams @params)
         {
             var t = target.DOScale(endValue, @params.Duration);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -96,7 +96,7 @@ namespace BBExtensions.DOTweenExt
         public static Tweener DOPunchScale(this Transform target, Vector3 punch, DOTweenParams @params, int vibrato = 10, float elasticity = 1f)
         {
             var t = target.DOPunchScale(punch, @params.Duration, vibrato, elasticity);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -111,7 +111,7 @@ namespace BBExtensions.DOTweenExt
         public static Tweener DOPunchRotation(this Transform target, Vector3 punch, DOTweenParams @params, int vibrato = 10, float elasticity = 1f)
         {
             var t = target.DOPunchRotation(punch, @params.Duration, vibrato, elasticity);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -127,7 +127,7 @@ namespace BBExtensions.DOTweenExt
         public static Tweener DOPunchPosition(this Transform target, Vector3 punch, DOTweenParams @params, int vibrato = 10, float elasticity = 1f, bool snapping = false)
         {
             var t = target.DOPunchPosition(punch, @params.Duration, vibrato, elasticity);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -142,7 +142,7 @@ namespace BBExtensions.DOTweenExt
         public static Tweener DOShakePosition(this Transform target, DOTweenParams @params, float strength = 1f, int vibrato = 10, float randomness = 90f, bool snapping = false, bool fadeOut = true)
         {
             var t = target.DOShakePosition(@params.Duration, strength, vibrato, randomness, snapping, fadeOut);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -156,7 +156,7 @@ namespace BBExtensions.DOTweenExt
         public static Tweener DOShakeRotation(this Transform target, DOTweenParams @params, float strength = 90f, int vibrato = 10, float randomness = 90f, bool fadeOut = true)
         {
             var t = target.DOShakeRotation(@params.Duration, strength, vibrato, randomness, fadeOut);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -170,7 +170,7 @@ namespace BBExtensions.DOTweenExt
         public static Tweener DOShakeScale(this Transform target, DOTweenParams @params, float strength = 1f, int vibrato = 10, float randomness = 90f, bool fadeOut = true)
         {
             var t = target.DOShakeScale(@params.Duration, strength, vibrato, randomness, fadeOut);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -187,7 +187,7 @@ namespace BBExtensions.DOTweenExt
         public static Sequence DOLocalJump(this Transform target, Vector3 endValue, float jumpPower, int numJumps, DOTweenParams @params, bool snapping = false)
         {
             var t = target.DOLocalJump(endValue, jumpPower, numJumps, @params.Duration, snapping);
-            SetEase(t, @params);
+            SetEaseInternal(t, @params);
             return t;
         }
 
@@ -201,8 +201,44 @@ namespace BBExtensions.DOTweenExt
         /// <returns></returns>
         public static TweenerCore<Vector3, Vector3, VectorOptions> DOLocalMove(this Transform target, Vector3 endValue, DOTweenParams @params, bool snapping = false)
         {
-            var t = target.DOLocalMove(endValue, @params.Duration, snapping).SetEase(Ease.Flash);
-            SetEase(t, @params);
+            var t = target.DOLocalMove(endValue, @params.Duration, snapping);
+            SetEaseInternal(t, @params);
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's X localPosition to the given value.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="params">The duration of the tween and Ease</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOLocalMoveX(this Transform target, float endValue, DOTweenParams @params, bool snapping = false)
+        {
+            var t = target.DOLocalMoveX(endValue, @params.Duration, snapping);
+            SetEaseInternal(t, @params);
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's Y localPosition to the given value.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="params">The duration of the tween and Ease</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOLocalMoveY(this Transform target, float endValue, DOTweenParams @params, bool snapping = false)
+        {
+            var t = target.DOLocalMoveY(endValue, @params.Duration, snapping);
+            SetEaseInternal(t, @params);
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's Z localPosition to the given value.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="params">The duration of the tween and Ease</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOLocalMoveZ(this Transform target, float endValue, DOTweenParams @params, bool snapping = false)
+        {
+            var t = target.DOLocalMoveZ(endValue, @params.Duration, snapping);
+            SetEaseInternal(t, @params);
             return t;
         }
 
