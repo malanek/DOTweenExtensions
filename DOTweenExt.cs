@@ -242,6 +242,42 @@ namespace BBExtensions.DOTweenExt
             return t;
         }
 
+        /// <summary>Tweens a Transform's X position to the given value.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="params">The duration of the tween and Ease</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOMoveX(this Transform target, float endValue, DOTweenParams @params, bool snapping = false)
+        {
+            var t = target.DOMoveX(endValue, @params.Duration, snapping);
+            SetEaseInternal(t, @params);
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's Y position to the given value.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="params">The duration of the tween and Ease</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOMoveY(this Transform target, float endValue, DOTweenParams @params, bool snapping = false)
+        {
+            var t = target.DOMoveY(endValue, @params.Duration, snapping);
+            SetEaseInternal(t, @params);
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's Z position to the given value.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="params">The duration of the tween and Ease</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOMoveZ(this Transform target, float endValue, DOTweenParams @params, bool snapping = false)
+        {
+            var t = target.DOMoveZ(endValue, @params.Duration, snapping);
+            SetEaseInternal(t, @params);
+            return t;
+        }
+
         /// <summary>
         /// Sets the ease of the tween.<br/>
         /// If applied to Sequences eases the whole sequence animation.
