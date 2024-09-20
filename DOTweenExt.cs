@@ -1,6 +1,7 @@
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.CustomPlugins;
+using DG.Tweening.Plugins;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Plugins.Options;
@@ -291,6 +292,22 @@ namespace BBExtensions.DOTweenExt
         public static TweenerCore<Quaternion, Quaternion, NoOptions> DOLocalRotateQuaternion(this Transform target, Quaternion endValue, DOTweenParams @params)
         {
             var t = target.DOLocalRotateQuaternion(endValue, @params.Duration);
+            SetEaseInternal(t, @params);
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's localPosition through the given path waypoints, using the chosen path algorithm.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="path">The waypoint to go through</param>
+        /// <param name="params">The duration of the tween and Ease</param>
+        /// <param name="pathType">The type of path: Linear (straight path), CatmullRom (curved CatmullRom path) or CubicBezier (curved with control points)</param>
+        /// <param name="pathMode">The path mode: 3D, side-scroller 2D, top-down 2D</param>
+        /// <param name="resolution">The resolution of the path: higher resolutions make for more detailed curved paths but are more expensive.
+        /// Defaults to 10, but a value of 5 is usually enough if you don't have dramatic long curves between waypoints</param>
+        /// <param name="gizmoColor">The color of the path (shown when gizmos are active in the Play panel and the tween is running)</param>
+        public static TweenerCore<Vector3, Path, PathOptions> DOLocalPath(this Transform target, Vector3[] path, DOTweenParams @params, PathType pathType = PathType.Linear, PathMode pathMode = PathMode.Full3D, int resolution = 10, Color? gizmoColor = null)
+        {
+            var t = target.DOLocalPath(path, @params.Duration, pathType, pathMode, resolution, gizmoColor);
             SetEaseInternal(t, @params);
             return t;
         }
