@@ -1,5 +1,7 @@
 using DG.Tweening;
 using DG.Tweening.Core;
+using DG.Tweening.CustomPlugins;
+using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -274,6 +276,23 @@ namespace BBExtensions.DOTweenExt
         public static TweenerCore<Vector3, Vector3, VectorOptions> DOMoveZ(this Transform target, float endValue, DOTweenParams @params, bool snapping = false)
         {
             var t = target.DOMoveZ(endValue, @params.Duration, snapping);
+            SetEaseInternal(t, @params);
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's rotation to the given value using pure quaternion values.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations.
+        /// <para>PLEASE NOTE: DOLocalRotate, which takes Vector3 values, is the preferred rotation method.
+        /// This method was implemented for very special cases, and doesn't support LoopType.Incremental loops
+        /// (neither for itself nor if placed inside a LoopType.Incremental Sequence)</para>
+        /// </summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="params">The duration of the tween and Ease</param>
+        public static TweenerCore<Quaternion, Quaternion, NoOptions> DOLocalRotateQuaternion(this Transform target, Quaternion endValue, DOTweenParams @params)
+        {
+            var t = target.DOLocalRotateQuaternion(endValue, @params.Duration);
+
+            TweenerCore<Quaternion, Quaternion, NoOptions> t = DOTween.To<Quaternion, Quaternion, NoOptions>((ABSTweenPlugin<Quaternion, Quaternion, NoOptions>)PureQuaternionPlugin.Plug(), (DOGetter<Quaternion>)(() => target.localRotation), (DOSetter<Quaternion>)(x => target.localRotation = x), endValue, duration);
             SetEaseInternal(t, @params);
             return t;
         }
