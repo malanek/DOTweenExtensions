@@ -291,8 +291,6 @@ namespace BBExtensions.DOTweenExt
         public static TweenerCore<Quaternion, Quaternion, NoOptions> DOLocalRotateQuaternion(this Transform target, Quaternion endValue, DOTweenParams @params)
         {
             var t = target.DOLocalRotateQuaternion(endValue, @params.Duration);
-
-            TweenerCore<Quaternion, Quaternion, NoOptions> t = DOTween.To<Quaternion, Quaternion, NoOptions>((ABSTweenPlugin<Quaternion, Quaternion, NoOptions>)PureQuaternionPlugin.Plug(), (DOGetter<Quaternion>)(() => target.localRotation), (DOSetter<Quaternion>)(x => target.localRotation = x), endValue, duration);
             SetEaseInternal(t, @params);
             return t;
         }
