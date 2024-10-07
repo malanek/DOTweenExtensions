@@ -54,16 +54,16 @@ namespace BBExtensions.DOTweenExt
 
         private int GetElementIndex(SerializedProperty property)
         {
-            if (property.depth == 0)
+            if (property.depth == 0 || !property.propertyPath.Contains("["))
                 return -1;
-            string propertyName = property.propertyPath;
-            int startIndex = propertyName.IndexOf("[") + 1;
-            int endIndex = propertyName.IndexOf("]", startIndex);
-            string indexString = propertyName[startIndex..endIndex];
-            int index = int.Parse(indexString);
 
-            return index;
+            int startIndex = property.propertyPath.LastIndexOf("[") + 1;
+            int endIndex = property.propertyPath.IndexOf("]", startIndex);
+            string indexString = property.propertyPath[startIndex..endIndex];
+
+            return int.TryParse(indexString, out int index) ? index : -1;
         }
+
     }
 }
 #endif
