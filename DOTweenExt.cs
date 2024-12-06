@@ -311,6 +311,21 @@ namespace BBExtensions.DOTweenExt
             SetEaseInternal(t, @params);
             return t;
         }
+        
+        /// <summary>
+        /// Animates the blend shape weight of a SkinnedMeshRenderer at a specified index to a target value over a defined duration using DOTween.
+        /// </summary>
+        /// <param name="skinnedMeshRenderer">The SkinnedMeshRenderer on which the blend shape animation is applied.</param>
+        /// <param name="index">The index of the blend shape to animate.</param>
+        /// <param name="endValue">The target value for the blend shape weight.</param>
+        /// <param name="params">DOTween parameters that specify the animation duration and easing options.</param>
+        /// <returns>A TweenerCore object that represents the animation and can be used to control it.</returns>
+        public static TweenerCore<float, float, FloatOptions> DOBlendShape(this SkinnedMeshRenderer skinnedMeshRenderer, int index, float endValue, DOTweenParams @params)
+        {
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => skinnedMeshRenderer.GetBlendShapeWeight(index), x => skinnedMeshRenderer.SetBlendShapeWeight(index, x),endValue, @params.Duration);
+            SetEaseInternal(t, @params);
+            return t;
+        }
 
         /// <summary>
         /// Sets the ease of the tween.<br/>
