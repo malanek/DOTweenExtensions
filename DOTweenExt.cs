@@ -11,6 +11,37 @@ namespace BBExtensions.DOTweenExt
 {
     public static class DOTweenExt
     {
+        /// <summary>
+        /// Rotates the transform to flip it in a specified direction and around a given axis, using the parameters defined in DOTweenParams.
+        /// </summary>
+        /// <param name="transform">The transform to be rotated.</param>
+        /// <param name="direction">The direction to flip the transform towards.</param>
+        /// <param name="axis">The axis around which the transform will rotate.</param>
+        /// <param name="endAngle">The final angle (in degrees) the transform will rotate to.</param>
+        /// <param name="@params">The DOTweenParams containing duration and other settings for the animation.</param>
+        /// <returns>A TweenerCore that handles the animation of the transform's rotation.</returns>
+        public static TweenerCore<float, float, FloatOptions> DOFlipToDirection(this Transform transform, Vector3 direction, Vector3 axis, float endAngle, DOTweenParams @params)
+        {
+            var t = transform.DOFlipToDirection(direction, axis, endAngle, @params.Duration).SetEase(@params);
+            SetEaseInternal(t, @params);
+            return t;
+        }
+        
+        /// <summary>
+        /// Rotates the transform to flip it in a specified direction and around a given axis, for a specified duration.
+        /// </summary>
+        /// <param name="transform">The transform to be rotated.</param>
+        /// <param name="direction">The direction to flip the transform towards.</param>
+        /// <param name="axis">The axis around which the transform will rotate.</param>
+        /// <param name="endAngle">The final angle (in degrees) the transform will rotate to.</param>
+        /// <param name="duration">The duration of the rotation animation.</param>
+        /// <returns>A TweenerCore that handles the animation of the transform's rotation.</returns>
+        public static TweenerCore<float, float, FloatOptions> DOFlipToDirection(this Transform transform, Vector3 direction, Vector3 axis, float endAngle, float duration)
+        {
+            Vector3 rotationAxis = Vector3.Cross(direction, axis);
+            return DOTween.To(() => 0f, angle => transform.rotation = Quaternion.AngleAxis(angle, rotationAxis), endAngle, duration);
+        }
+        
         /// <summary>Tweens a Transform's position through the given path waypoints, using the chosen path algorithm.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="path">The waypoints to go through</param>
